@@ -8,7 +8,7 @@ import neat
 window_width = 500
 windows_height = 800
 
-bird_animation = [pygame.transform.scale2x(pygame.image.load(os.path.join("assets","bird1.png"))),pygame.transform.scale2x(pygame.image.load(os.path.join("assets","bird2.png"))),pygame.transform.scale2x(pygame.image.load(os.path.join("assets","bird3.png")))]
+bird_animation = [pygame.transform.scale2x(pygame.image.load(os.path.join("assets","bird" + str(x) + ".png"))) for x in range(1,4)]
 obs_img = pygame.transform.scale2x(pygame.image.load(os.path.join("assets","obs.png")))
 sky_img = pygame.transform.scale2x(pygame.image.load(os.path.join("assets","sky.png")))
 land_img = pygame.transform.scale2x(pygame.image.load(os.path.join("assets","land.png")))
@@ -61,27 +61,49 @@ class FlappyBird:
     def draw(self,window):
         self.img_counter += 1
         #one image change per 10 FramesPerSecond since we'll be locking frames at 30
-        if(self.img_counter < self.animation_time): 
+        if self.img_counter < self.animation_time:
+            self.img_counter = self.imgs[0]
+        elif self.img_counter < self.animation_time*2:
+            self.img = self.imgs[1]
+        elif self.img_counter < self.animation_time*3:
+            self.img = self.imgs[2]
+        elif self.img_counter < self.animation_time*4:
+            self.img = self.imgs[1]
+        elif self.img_counter == self.animation_time*4 + 1:
             self.img = self.imgs[0]
-        elif (self.img_counter < self.animation_time*2):
-            self.img = self.imgs[1]
-        elif (self.img_counter < self.animation_time*3):
-            self.img = self.imgs[2]        
-        elif (self.img_counter < self.animation_time*4):
-            self.img = self.imgs[1]
-        elif(self.img_counter == self.animation_time * 4 + 1): 
-            self.img = self.imgs[0]    
-            self.img_counter = [0]
+            self.img_counter = 0
         #checking if build is going down
         if self.tilt <= -80:
             self.img = self.imgs[1]
-            self.img_counter = self.animation_time * 2
+            self.img_counter = self.animation_time*2
 
         rotated_img  = pygame.transform.rotate(self.img,self.tilt)
-        new_rect = rotated_img.get_rect(center=self.img.get_rect(topLeft=(self.x,self.y)).center)
-        window.blit(rotated_img,new_rect.topleft())
+        new_rect = rotated_img.get_rect(center=self.img.get_rect(topleft = (self.x, self.y )).center)
+        window.blit(rotated_img,new_rect.topleft)
 
     
+    def get_coll(self):
+        return pygame.mask.from_surface(self.img)
+
+def draw_window(window,bird):
+     window.blit(sky_img,(0,0))
+     bird.draw(window)
+     pygame.display.update()   
+
+def main():
+    bird = FlappyBird(200,200)
+    window = pygame.display.set_mode((window_width,windows_height))
+    run = True
+    while run:
+        for event in pygame.event.get():
+            if event.type == pygame.quit:
+                run = False
+        draw_window(window,bird)
+    pygame.quit()
+    quit()
+
+
+main()
 
     
 
