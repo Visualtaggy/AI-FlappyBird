@@ -48,6 +48,17 @@ class FlappyBird:
             displacement -= 3
 
         self.y = self.y + displacement
-        
+
+        #calculating arc of bird aka tilt 
+        #checking if bird is going up 
+        if(displacement < 0 or self.y < self.height + 50):
+            if self.tilt < self.max_rotation:
+                self.tilt = self.max_rotation
+        else:
+            if self.tilt > -90:
+                self.tilt -= self.rotation_speed
+
+    
+
 
     
