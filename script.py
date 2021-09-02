@@ -5,7 +5,7 @@ import pygame
 import neat
 
 #setting up dimensions for game window
-window_width = 600
+window_width = 500
 windows_height = 800
 
 bird_animation = [pygame.transform.scale2x(pygame.image.load(os.path.join("assets","bird1.png"))),pygame.transform.scale2x(pygame.image.load(os.path.join("assets","bird2.png"))),pygame.transform.scale2x(pygame.image.load(os.path.join("assets","bird3.png")))]
@@ -29,3 +29,25 @@ class FlappyBird:
         self.height = self.y
         self.img_counter = 0
         self.img = self.imgs[0]
+
+    def jump(self):
+        # x,y = 0,0 so -15 speed will make the bird jump down aka negative velocity 
+        self.speed = -15;
+        self.tick = 0
+        self.height = self.y
+
+    def move(self):
+        self.tick += 1
+        #calculating displacement here with use of tick count so that the position of the bird every second can be found
+        displacement = self.speed * self.tick + 1.5 * self.tick ** 2
+        
+        if(displacement >= 15):
+            displacement =  15
+
+        if(displacement < 0):
+            displacement -= 3
+
+        self.y = self.y + displacement
+        
+
+    
