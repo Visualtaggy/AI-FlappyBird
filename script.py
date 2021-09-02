@@ -57,6 +57,31 @@ class FlappyBird:
         else:
             if self.tilt > -90:
                 self.tilt -= self.rotation_speed
+    
+    def draw(self,window):
+        self.img_counter += 1
+        #one image change per 10 FramesPerSecond since we'll be locking frames at 30
+        if(self.img_counter < self.animation_time): 
+            self.img = self.imgs[0]
+        elif (self.img_counter < self.animation_time*2):
+            self.img = self.imgs[1]
+        elif (self.img_counter < self.animation_time*3):
+            self.img = self.imgs[2]        
+        elif (self.img_counter < self.animation_time*4):
+            self.img = self.imgs[1]
+        elif(self.img_counter == self.animation_time * 4 + 1): 
+            self.img = self.imgs[0]    
+            self.img_counter = [0]
+        #checking if build is going down
+        if self.tilt <= -80:
+            self.img = self.imgs[1]
+            self.img_counter = self.animation_time * 2
+
+        rotated_img  = pygame.transform.rotate(self.img,self.tilt)
+        new_rect = rotated_img.get_rect(center=self.img.get_rect(topLeft=(self.x,self.y)).center)
+        window.blit(rotated_img,new_rect.topleft())
+
+    
 
     
 
