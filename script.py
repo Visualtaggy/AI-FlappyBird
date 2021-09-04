@@ -24,7 +24,7 @@ def draw_window(window,bird,obstacles, land):
 
 
 def main():
-    bird = FlappyBird(200,200)
+    bird = FlappyBird(220,350)
 
 
     obstacles = [Obstacle(700)]
@@ -41,15 +41,11 @@ def main():
         for event in pygame.event.get():
             if event.type == pygame.QUIT:
                 run = False
-        bird.move()
+        #bird.move()
+        land.move()
         draw_window(window,bird,obstacles,land)
     pygame.quit()
     quit()
 
 
 main()
-
-    
-
-
-    
