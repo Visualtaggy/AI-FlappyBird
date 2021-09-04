@@ -33,7 +33,7 @@ def main():
     bird = FlappyBird(220,350)
 
 
-    obstacles = [Obstacle(700)]
+    obstacles = [Obstacle(500)]
     land = Land(730)
 
     window = pygame.display.set_mode((window_width,window_height))
@@ -63,7 +63,7 @@ def main():
             
         if add_obs:
             score += 1
-            obstacles.append(Obstacle(700))
+            obstacles.append(Obstacle(500))
         
         for r in rem:
             obstacles.remove(r)
