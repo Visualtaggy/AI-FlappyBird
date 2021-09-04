@@ -8,6 +8,8 @@ from Files.Constants import *
 from Files.Obs import Obstacle
 from Files.Land import Land
 
+pygame.display.set_caption("AI FlappyBird - Vishal Tyagi")
+
 
 def draw_window(window,bird,obstacles, land):
      window.blit(sky_img,(0,0))
@@ -42,6 +44,9 @@ def main():
             if event.type == pygame.QUIT:
                 run = False
         #bird.move()
+        for obs in obstacles:
+            obs.move_obs()
+
         land.move()
         draw_window(window,bird,obstacles,land)
     pygame.quit()
