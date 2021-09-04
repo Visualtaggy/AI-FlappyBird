@@ -11,12 +11,16 @@ from Files.Land import Land
 pygame.display.set_caption("AI FlappyBird - Vishal Tyagi")
 
 
-def draw_window(window,bird,obstacles, land):
+def draw_window(window,bird,obstacles, land, score):
      window.blit(sky_img,(0,0))
 
      for obstacle in obstacles:
         obstacle.draw(window)
 
+
+     text = score_font.render("Score: " + str(score),1,(255,255,255))
+     window.blit(text,(window_width - 10 -text.get_width(),10))
+    
      land.draw(window)
 
      bird.draw(window)
@@ -64,8 +68,11 @@ def main():
         for r in rem:
             obstacles.remove(r)
 
+        if bird.y + bird.img.get_height() >= 730:
+            pass
+
         land.move()
-        draw_window(window,bird,obstacles,land)
+        draw_window(window,bird,obstacles,land,score)
     pygame.quit()
     quit()
 
