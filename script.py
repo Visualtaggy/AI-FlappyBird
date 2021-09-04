@@ -19,11 +19,17 @@ def draw_window(window,bird):
 def main():
     bird = FlappyBird(200,200)
     window = pygame.display.set_mode((window_width,window_height))
+
+    #let's not make skyrim and keep fps seprate from speed of the system.
+    clock = pygame.time.Clock()
+
     run = True
     while run:
+        clock.tick(30)
         for event in pygame.event.get():
             if event.type == pygame.QUIT:
                 run = False
+        bird.move()
         draw_window(window,bird)
     pygame.quit()
     quit()
