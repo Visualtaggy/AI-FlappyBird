@@ -34,6 +34,7 @@ def main():
 
     window = pygame.display.set_mode((window_width,window_height))
 
+    score = 0
     #let's not make skyrim and keep fps seprate from speed of the system.
     clock = pygame.time.Clock()
 
@@ -44,8 +45,24 @@ def main():
             if event.type == pygame.QUIT:
                 run = False
         #bird.move()
+        add_obs = False
+        rem = []
         for obs in obstacles:
+            if obs.collide(bird):
+                pass
+            if obs.x + obs.obs_top.get_width() < 0:
+                rem.append(obs)
+            if not obs.bird_passed and obs.x < bird.x:
+                obs.bird_passed  = True
+                add_obs = True
             obs.move_obs()
+            
+        if add_obs:
+            score += 1
+            obstacles.append(Obstacle(700))
+        
+        for r in rem:
+            obstacles.remove(r)
 
         land.move()
         draw_window(window,bird,obstacles,land)
