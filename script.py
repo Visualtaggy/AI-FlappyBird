@@ -90,7 +90,7 @@ def main(genomes,config):
         rem = []
         for obs in obstacles:
             for x, bird in enumerate(birds):
-                if obs.collide(bird):
+                if obs.collide(bird,window):
                     ge[x].fitness -= 1
                     birds.pop(x)
                     nets.pop(x)
@@ -105,7 +105,7 @@ def main(genomes,config):
             if obs.x + obs.obs_top.get_width() < 0:
                 rem.append(obs)
 
-            obs.move_obs()
+            obs.move()
             
         if add_obs:
             score += 1
