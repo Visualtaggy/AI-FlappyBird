@@ -6,35 +6,36 @@ class Obstacle():
     space = 200
     speed = 5
 
-    def __init__(self,x):
-        self.x = x 
+    def __init__(self, x):
+        self.x = x
         self.height = 0
 
         self.top = 0
         self.bottom = 0
-        self.obs_top = pygame.transform.flip(obs_img,False,True)
-        self.obs_botton = obs_img
+        self.obs_top = pygame.transform.flip(obs_img, False, True)
+        self.obs_bottom = obs_img
 
         self.bird_passed = False
         self.set_height()
-    
+
     def set_height(self):
-        self.height = random.randrange(40,450)
+        self.height = random.randrange(50, 450)
         self.top = self.height - self.obs_top.get_height()
-        self.botton = self.height + self.space
+        self.bottom = self.height + self.space
 
-    def move_obs(self):
-        self.x -=  self.speed
-    
-    def draw(self,win):
-        win.blit(self.obs_top,(self.x,self.top))
-        win.blit(self.obs_botton,(self.x,self.botton))
-    
-    def collide(self, bird):
+    def move(self):
+        self.x -= self.speed
 
+    def draw(self, win):
+        win.blit(self.obs_top, (self.x, self.top))
+        win.blit(self.obs_bottom, (self.x, self.bottom))
+
+    def collide(self, bird, win):
+
+        
         bird_mask = bird.get_coll()
         top_mask = pygame.mask.from_surface(self.obs_top)
-        bottom_mask = pygame.mask.from_surface(self.obs_botton)
+        bottom_mask = pygame.mask.from_surface(self.obs_bottom)
         top_offset = (self.x - bird.x, self.top - round(bird.y))
         bottom_offset = (self.x - bird.x, self.bottom - round(bird.y))
 
