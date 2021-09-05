@@ -8,7 +8,7 @@ class FlappyBird:
     rotation_speed = 20
     animation_time = 5
 
-    def __init__(self ,x,y):
+    def __init__(self, x, y):
         self.x = x
         self.y = y
         self.tilt = 0  
@@ -20,35 +20,38 @@ class FlappyBird:
 
     def jump(self):
         # x,y = 0,0 so -15 speed will make the bird jump down aka negative velocity 
-        self.speed = -15;
+        self.speed = -10.5
         self.tick = 0
         self.height = self.y
 
     def move(self):
-        self.tick += 1
+        self.tick += 1        
         #calculating displacement here with use of tick count so that the position of the bird every second can be found
         displacement = self.speed * self.tick + 1.5 * self.tick ** 2
-        
-        if(displacement >= 15):
-            displacement =  15
 
-        if(displacement < 0):
-            displacement -= 3
+        if (displacement) >= 15:
+            displacement = (displacement/abs(displacement)) * 16
+
+        if displacement < 0:
+            displacement -= 2
 
         self.y = self.y + displacement
 
         #calculating arc of bird aka tilt 
         #checking if bird is going up 
-        if(displacement < 0 or self.y < self.height + 50):
+
+        if displacement < 0 or self.y < self.height + 50:  
             if self.tilt < self.max_rotation:
                 self.tilt = self.max_rotation
         else: 
             if self.tilt > -90:
                 self.tilt -= self.rotation_speed
-    
-    def draw(self,window):
-        self.img_counter += 1
+
+    def draw(self, win):
         # For animation of bird, loop through three images
+
+        self.img_counter += 1
+
         if self.img_counter <= self.animation_time:
             self.img = self.imgs[0]
         elif self.img_counter <= self.animation_time*2:
@@ -60,14 +63,13 @@ class FlappyBird:
         elif self.img_counter == self.animation_time*4 + 1:
             self.img = self.imgs[0]
             self.img_counter = 0
-
          # so when bird is nose diving it isn't flapping
         if self.tilt <= -80:
             self.img = self.imgs[1]
-            self.img_counter = self.animation_time*2   
+            self.img_counter = self.animation_time*2
 
-        blitRotateCenter(window, self.img, (self.x, self.y), self.tilt)
-    
+        blitRotateCenter(win, self.img, (self.x, self.y), self.tilt)
+
     def get_coll(self):
         return pygame.mask.from_surface(self.img)
 
