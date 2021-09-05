@@ -9,9 +9,9 @@ from Files.Obs import Obstacle
 from Files.Land import Land
 
 pygame.display.set_caption("AI FlappyBird - Vishal Tyagi")
+debug = False
 
-
-def draw_window(window,birds,obstacles, land, score):
+def draw_window(window,birds,obstacles, land, score,pipe_ind):
      window.blit(sky_img,(0,0))
 
      for obstacle in obstacles:
@@ -21,7 +21,16 @@ def draw_window(window,birds,obstacles, land, score):
      text = score_font.render("Score: " + str(score),1,(255,255,255))
      window.blit(text,(window_width - 10 -text.get_width(),10))
      for bird in birds:
-         bird.draw(window)
+
+        if debug:
+            try:
+                pygame.draw.line(window, (128,0,128), (bird.x+bird.img.get_width()/2, bird.y + bird.img.get_height()/2), (obstacles[pipe_ind].x + obstacles[pipe_ind].obs_top.get_width()/2, obstacles[pipe_ind].height), 5)
+                pygame.draw.line(window, (128,0,128), (bird.x+bird.img.get_width()/2, bird.y + bird.img.get_height()/2), (obstacles[pipe_ind].x + obstacles[pipe_ind].obs_bottom.get_width()/2, obstacles[pipe_ind].bottom), 5)
+            except:
+                pass
+
+
+        bird.draw(window)
 
 
      land.draw(window)
@@ -123,7 +132,7 @@ def main(genomes,config):
                 ge.pop(x)
 
         land.move()
-        draw_window(window,birds,obstacles,land,score)
+        draw_window(window,birds,obstacles,land,score,pipe_ind)
 #    pygame.quit()
 #    quit()
 
@@ -139,7 +148,7 @@ def run(config_file):
     stats = neat.StatisticsReporter()
     population.add_reporter(stats)
 
-    winner = population.run(main,50)
+    winner = population.run(main,100)
 
 
 if __name__ == "__main__":
